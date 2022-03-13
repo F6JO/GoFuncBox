@@ -1,4 +1,10 @@
 package gopool
+
+import (
+	"sync"
+	"fmt"
+)
+
 type SimplePool struct {
 	wg   sync.WaitGroup
 	work chan func() //任务队列
