@@ -1,3 +1,4 @@
+package gopool
 type SimplePool struct {
 	wg   sync.WaitGroup
 	work chan func() //任务队列
