@@ -3,6 +3,10 @@ package gopool
 import (
 	"sync"
 	"fmt"
+	"bufio"
+	"errors"
+	"os"
+	"strings"
 )
 
 type SimplePool struct {
@@ -44,4 +48,37 @@ func (p *SimplePool) Add(fn func()) {
 func (p *SimplePool) Run() {
 	close(p.work)
 	p.wg.Wait()
+}
+
+
+
+
+func GetHeaders(filepath string) (map[string]string, error) {
+	file,err := os.Open(filepath)
+	defer file.Close()
+	zidian := map[string]string{}
+	if err != nil{
+		return nil,errors.New(err.Error())
+	}
+	ioliu := bufio.NewReader(file)
+	for {
+		nr, err := ioliu.ReadString('\n')
+		if err != nil{
+			return zidian, nil
+		}
+		key,value := handle_row(nr)
+		if key != "Host" {
+			zidian[key] = value
+		}
+
+	}
+}
+
+func handle_row(row string) (string, string) {
+	row = strings.Replace(row,"\n","",-1)
+	sy := strings.Index(row,":")
+	key := strings.TrimSpace(row[:sy])
+	value := strings.TrimSpace(row[sy+1:])
+	return key,value
+
 }
