@@ -1,4 +1,4 @@
-package gopool
+package self_F6JO
 
 import (
 	"sync"
