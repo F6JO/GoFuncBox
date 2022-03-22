@@ -77,11 +77,13 @@ func GetHeaders(filepath string) (map[string]interface{}, error) {
 				jian := strings.TrimSpace(list2[0])
 				zhi := ""
 				for _,x := range list2[1:]{
-					zhi += strings.TrimSpace(x)
+					zhi += "="+strings.TrimSpace(x)
 				}
-				zidian2[jian] = zhi
+				zidian2[jian] = strings.Trim(zhi,"=")
 			}
+
 			zidian[key] = zidian2
+
 		}
 
 	}
