@@ -1,6 +1,6 @@
 # 自用方法
 
-github.com/F6JO/self_F6JO
+github.com/F6JO/GoFuncBox
 
 ***
 
