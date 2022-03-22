@@ -53,10 +53,10 @@ func (p *SimplePool) Run() {
 
 
 
-func GetHeaders(filepath string) (map[string]string, error) {
+func GetHeaders(filepath string) (map[string]interface{}, error) {
 	file,err := os.Open(filepath)
 	defer file.Close()
-	zidian := map[string]string{}
+	zidian := map[string]interface{}{}
 	if err != nil{
 		return nil,errors.New(err.Error())
 	}
@@ -67,8 +67,18 @@ func GetHeaders(filepath string) (map[string]string, error) {
 			return zidian, nil
 		}
 		key,value := handle_row(nr)
-		if key != "Host" {
+		if key != "Host" && key != "Cookie"{
 			zidian[key] = value
+		}else if key == "Cookie" {
+			zidian2 := map[string]string{}
+			list1 := strings.Split(value,";")
+			for _,a := range list1{
+				list2 := strings.Split(a,"=")
+				jian := strings.TrimSpace(list2[0])
+				zhi := strings.TrimSpace(list2[1])
+				zidian2[jian] = zhi
+			}
+			zidian[key] = zidian2
 		}
 
 	}
