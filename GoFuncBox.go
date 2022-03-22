@@ -1,12 +1,12 @@
-package self_F6JO
+package GoFuncBox
 
 import (
-	"sync"
-	"fmt"
 	"bufio"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
+	"sync"
 )
 
 type SimplePool struct {
