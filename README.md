@@ -14,3 +14,7 @@ github.com/F6JO/GoFuncBox
 ### 请求头字符串转map
 
 * GetHeaders(path)	返回map与err
+
+### 命令行相关方法
+
+* PrintCmdOutput(cmd *exec.Cmd) 实时打印命令输出
