@@ -17,4 +17,5 @@ github.com/F6JO/GoFuncBox
 
 ### 命令行相关方法
 
-* PrintCmdOutput(cmd *exec.Cmd) 实时打印命令输出
+* PrintCmdOutput(comm string) 执行命令并实时打印命令输出
+* exec_comm(comm string) 传入一句命令，解析后返回*exec.Cmd
