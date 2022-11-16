@@ -13,7 +13,8 @@ import (
 
 
 
-func PrintCmdOutput(cmd *exec.Cmd) {
+func PrintCmdOutput(comm string) {
+	cmd := exec_comm(comm)
 	cmd.Stdin = os.Stdin
 
 	var wg sync.WaitGroup
@@ -66,4 +67,19 @@ func GetOutput(reader *bufio.Reader) {
 		fmt.Print(output) //输出屏幕内容
 		sumOutput += output
 	}
+}
+
+func exec_comm(comm string) *exec.Cmd {
+	str_list := strings.Split(comm," ")
+	strings := []string{};
+	startName := "";
+	for i,str := range str_list{
+		if  i == 0{
+			startName = str;
+			continue;
+		}
+		strings = append(strings, str)
+	}
+	return exec.Command(startName,strings...)
+
 }
