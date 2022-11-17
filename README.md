@@ -17,5 +17,5 @@ github.com/F6JO/GoFuncBox
 
 ### 命令行相关方法
 
-* PrintCmdOutput(comm string) 执行命令并实时打印命令输出
+* PrintCmdOutput(comm string, proc_line func(str string)) string 传入一行命令并执行，传入处理函数处理每一行的输出，返回值为全部输出
 * exec_comm(comm string) 传入一句命令，解析后返回*exec.Cmd

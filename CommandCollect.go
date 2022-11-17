@@ -13,7 +13,7 @@ import (
 
 
 
-func PrintCmdOutput(comm string) {
+func PrintCmdOutput(comm string, proc_line func(str string)) string{
 	cmd := exec_comm(comm)
 	cmd.Stdin = os.Stdin
 
@@ -26,9 +26,12 @@ func PrintCmdOutput(comm string) {
 		os.Exit(1)
 	}
 	readout := bufio.NewReader(stdout)
+
+	jieguo := ""
+
 	go func() {
 		defer wg.Done()
-		GetOutput(readout)
+		getOutput(readout, proc_line,&jieguo)
 	}()
 
 	//捕获标准错误
@@ -38,36 +41,41 @@ func PrintCmdOutput(comm string) {
 		os.Exit(1)
 	}
 	readerr := bufio.NewReader(stderr)
+
 	go func() {
 		defer wg.Done()
-		GetOutput(readerr)
+		getOutput(readerr, proc_line, &jieguo)
 	}()
 
-	//执行命令
+	////执行命令
 	err = cmd.Run()
 	if err != nil {
-		return
+		return ""
 	}
+
 	wg.Wait()
+	return jieguo
+
+
+
 }
 
-func GetOutput(reader *bufio.Reader) {
-	var sumOutput string //统计屏幕的全部输出内容
-	outputBytes := make([]byte, 200)
+
+func getOutput(reader *bufio.Reader, proc_line func(str string), s *string) {
 	for {
-		n, err := reader.Read(outputBytes) //获取屏幕的实时输出(并不是按照回车分割，所以要结合sumOutput)
+		line, _, err := reader.ReadLine()
 		if err != nil {
 			if err == io.EOF {
 				break
 			}
-			fmt.Println(err)
-			sumOutput += err.Error()
 		}
-		output := string(outputBytes[:n])
-		fmt.Print(output) //输出屏幕内容
-		sumOutput += output
+		proc_line(string(line))
+		*s += string(line) + "\n"
 	}
+
+
 }
+
 
 func exec_comm(comm string) *exec.Cmd {
 	str_list := strings.Split(comm," ")
